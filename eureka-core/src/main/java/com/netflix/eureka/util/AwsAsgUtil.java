@@ -67,29 +67,29 @@ public class AwsAsgUtil {
     private final Logger logger = LoggerFactory.getLogger(AwsAsgUtil.class);
     private static final String PROP_ADD_TO_LOAD_BALANCER = "AddToLoadBalancer";
     private static final EurekaServerConfig eurekaConfig = EurekaServerConfigurationManager
-            .getInstance().getConfiguration();
+    .getInstance().getConfiguration();
     private static final AmazonAutoScaling client = getAmazonAutoScalingClient();
     // Cache for the AWS ASG information
     private final LoadingCache<String, Boolean> asgCache = CacheBuilder
-            .newBuilder().initialCapacity(500)
-            .expireAfterAccess(5, TimeUnit.MINUTES)
-            .build(new CacheLoader<String, Boolean>() {
+    .newBuilder().initialCapacity(500)
+    .expireAfterAccess(5, TimeUnit.MINUTES)
+    .build(new CacheLoader<String, Boolean>() {
 
-                @Override
-                public Boolean load(String key) throws Exception {
-                    return isASGEnabledinAWS(key);
-                }
-            });
+        @Override
+        public Boolean load(String key) throws Exception {
+            return isASGEnabledinAWS(key);
+        }
+    });
 
     private final Timer timer = new Timer("Eureka-ASGCacheRefresh", true);
     private final com.netflix.servo.monitor.Timer loadASGInfoTimer = Monitors
-            .newTimer("Eureka-loadASGInfo");
+    .newTimer("Eureka-loadASGInfo");
 
     private static final AwsAsgUtil awsAsgUtil = new AwsAsgUtil();
 
     private AwsAsgUtil() {
         String region = DiscoveryManager.getInstance().getEurekaClientConfig()
-                .getRegion();
+        .getRegion();
         client.setEndpoint("autoscaling." + region + ".amazonaws.com");
         timer.schedule(getASGUpdateTask(),
                 eurekaConfig.getASGUpdateIntervalMs(),
@@ -184,9 +184,9 @@ public class AwsAsgUtil {
     private AutoScalingGroup retrieveAutoScalingGroup(String asgName) {
         // You can pass one name or a list of names in the request
         DescribeAutoScalingGroupsRequest request = new DescribeAutoScalingGroupsRequest()
-                .withAutoScalingGroupNames(asgName);
+        .withAutoScalingGroupNames(asgName);
         DescribeAutoScalingGroupsResult result = client
-                .describeAutoScalingGroups(request);
+        .describeAutoScalingGroups(request);
         List<AutoScalingGroup> asgs = result.getAutoScalingGroups();
         if (asgs.isEmpty()) {
             return null;
