@@ -136,7 +136,7 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
     public int getEIPBindRebindRetries() {
         return configInstance.getIntProperty(
                 namespace + "eipBindRebindRetries", 3).get();
-
+        
     }
 
     /*
