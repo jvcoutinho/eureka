@@ -130,18 +130,6 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
     /*
      * (non-Javadoc)
      * 
-     * @see com.netflix.eureka.EurekaServerConfig#getEIPBindRebindRetries()
-     */
-    @Override
-    public int getEIPBindRebindRetries() {
-        return configInstance.getIntProperty(
-                namespace + "eipBindRebindRetries", 3).get();
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see com.netflix.eureka.EurekaServerConfig#getEIPBindingRetryInterval()
      */
     @Override
@@ -149,17 +137,6 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
         return configInstance.getIntProperty(
                 namespace + "eipBindRebindRetryIntervalMs", (5 * 60 * 1000))
                 .get();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.netflix.eureka.EurekaServerConfig#shouldEnableSelfPreservation()
-     */
-    @Override
-    public boolean shouldEnableSelfPreservation() {
-        return configInstance.getBooleanProperty(
-                namespace + "enableSelfPreservation", true).get();
     }
 
     /*
@@ -192,6 +169,17 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
     public int getNumberOfReplicationRetries() {
         return configInstance.getIntProperty(
                 namespace + "numberOfReplicationRetries", 5).get();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.netflix.eureka.EurekaServerConfig#shouldEnableSelfPreservation()
+     */
+    @Override
+    public boolean shouldEnableSelfPreservation() {
+        return configInstance.getBooleanProperty(
+                namespace + "enableSelfPreservation", true).get();
     }
 
     @Override
@@ -235,6 +223,17 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
     public int getPeerNodeConnectionIdleTimeoutSeconds() {
         return configInstance.getIntProperty(
                 namespace + "peerNodeConnectionIdleTimeoutSeconds", 30).get();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.netflix.eureka.EurekaServerConfig#shouldEnableSelfPreservation()
+     */
+    @Override
+    public boolean shouldEnableSelfPreservation() {
+        return configInstance.getBooleanProperty(
+                namespace + "enableSelfPreservation", true).get();
     }
 
     @Override
@@ -288,15 +287,6 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
     }
 
     @Override
-    public long getMaxIdleThreadInMinutesAgeForStatusReplication() {
-        return configInstance
-        .getLongProperty(
-                namespace
-                + "maxIdleThreadAgeInMinutesForStatusReplication",
-                10).get();
-    }
-
-    @Override
     public int getMinThreadsForStatusReplication() {
         return configInstance.getIntProperty(
                 namespace + "minThreadsForStatusReplication", 1).get();
@@ -312,6 +302,51 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
     public int getMaxElementsInStatusReplicationPool() {
         return configInstance.getIntProperty(
                 namespace + "maxElementsInStatusReplicationPool", 10000).get();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.netflix.eureka.EurekaServerConfig#getEIPBindRebindRetries()
+     */
+    @Override
+    public int getEIPBindRebindRetries() {
+        return configInstance.getIntProperty(
+                namespace + "eipBindRebindRetries", 3).get();
+
+    }
+
+    @Override
+    public long getMaxIdleThreadInMinutesAgeForStatusReplication() {
+        return configInstance
+        .getLongProperty(
+                namespace
+                + "maxIdleThreadAgeInMinutesForStatusReplication",
+                10).get();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.netflix.eureka.EurekaServerConfig#getEIPBindRebindRetries()
+     */
+    @Override
+    public int getEIPBindRebindRetries() {
+        return configInstance.getIntProperty(
+                namespace + "eipBindRebindRetries", 3).get();
+
+     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.netflix.eureka.EurekaServerConfig#getEIPBindRebindRetries()
+     */
+    @Override
+    public int getEIPBindRebindRetries() {
+        return configInstance.getIntProperty(
+                namespace + "eipBindRebindRetries", 3).get();
+
     }
 
     @Override
