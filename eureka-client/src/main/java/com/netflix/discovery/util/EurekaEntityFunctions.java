@@ -153,7 +153,7 @@ public final class EurekaEntityFunctions {
     }
 
     public static void copyApplications(Applications source, Applications result) {
-        if (source != null) {
+        if(source != null) {
             for (Application app : source.getRegisteredApplications()) {
                 result.addApplication(new Application(app.getName(), app.getInstances()));
             }
@@ -169,7 +169,7 @@ public final class EurekaEntityFunctions {
     }
 
     public static void copyApplication(Application source, Application result) {
-        if (source != null) {
+        if(source != null) {
             for (InstanceInfo instance : source.getInstances()) {
                 result.addInstance(instance);
             }
