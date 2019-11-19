@@ -258,7 +258,7 @@ public class DiscoveryClient implements EurekaClient {
      * @deprecated use the version that take {@link com.netflix.discovery.AbstractDiscoveryClientOptionalArgs} instead
      */
     @Deprecated
-    public DiscoveryClient(ApplicationInfoManager applicationInfoManager, final EurekaClientConfig config, DiscoveryClientOptionalArgs args) {
+public DiscoveryClient(ApplicationInfoManager applicationInfoManager, final EurekaClientConfig config, DiscoveryClientOptionalArgs args) {
         this(applicationInfoManager, config, (AbstractDiscoveryClientOptionalArgs) args);
     }
 
@@ -518,7 +518,7 @@ public class DiscoveryClient implements EurekaClient {
     }
 
     @Override
-    public EurekaClientConfig getEurekaClientConfig() {
+public EurekaClientConfig getEurekaClientConfig() {
         return clientConfig;
     }
     
@@ -541,10 +541,10 @@ public class DiscoveryClient implements EurekaClient {
      *
      * @see com.netflix.discovery.shared.LookupService#getApplications()
      */
-    @Override
+                @Override
     public Applications getApplications() {
-        return localRegionApps.get();
-    }
+                    return localRegionApps.get();
+                }
 
     @Override
     public Applications getApplicationsForARegion(@Nullable String region) {
@@ -1408,6 +1408,11 @@ public class DiscoveryClient implements EurekaClient {
 
         return healthCheckHandler;
     }
+
+    /**
+     * The task that fetches the registry information at specified intervals.
+     *
+     */
 
     /**
      * The task that fetches the registry information at specified intervals.
