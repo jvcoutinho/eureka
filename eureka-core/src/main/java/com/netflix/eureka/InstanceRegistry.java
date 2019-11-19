@@ -123,7 +123,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
      * int, long, boolean)
      */
     public void register(InstanceInfo r, int leaseDuration,
-                         boolean isReplication) {
+            boolean isReplication) {
         try {
             read.lock();
             Map<String, Lease<InstanceInfo>> gMap = _registry.get(r
@@ -140,7 +140,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
             // is already a lease
             if (existingLease != null && (existingLease.getHolder() != null)) {
                 Long existingLastDirtyTimestamp = existingLease.getHolder()
-                                                               .getLastDirtyTimestamp();
+                        .getLastDirtyTimestamp();
                 Long registrationLastDirtyTimestamp = r.getLastDirtyTimestamp();
                 if (existingLastDirtyTimestamp > registrationLastDirtyTimestamp) {
                     logger.warn(
@@ -169,7 +169,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
             synchronized (recentRegisteredQueue) {
                 recentRegisteredQueue.add(new Pair<Long, String>(Long
                         .valueOf(System.currentTimeMillis()), r.getAppName()
-                                                              + "(" + r.getId() + ")"));
+                        + "(" + r.getId() + ")"));
             }
             // This is where the initial state transfer of overridden status
             // happens
@@ -206,7 +206,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
             logger.info("Registered instance id {} with status {}", r.getId(),
                     r.getStatus().toString());
             logger.debug("DS: Registry: registered " + r.getAppName() + " - "
-                         + r.getId());
+                    + r.getId());
         } finally {
             read.unlock();
         }
@@ -242,7 +242,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
             synchronized (recentCanceledQueue) {
                 recentCanceledQueue.add(new Pair<Long, String>(Long
                         .valueOf(System.currentTimeMillis()), appName + "("
-                                                              + id + ")"));
+                        + id + ")"));
             }
             InstanceStatus instanceStatus = overriddenInstanceStatusMap
                     .remove(id);
@@ -254,7 +254,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
             if (leaseToCancel == null) {
                 CANCEL_NOT_FOUND.increment(isReplication);
                 logger.warn("DS: Registry: cancel failed because Lease is not registered for: "
-                            + appName + ":" + id);
+                        + appName + ":" + id);
                 return false;
             } else {
                 leaseToCancel.cancel();
@@ -271,7 +271,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
                 }
                 invalidateCache(appName, vip, svip);
                 logger.debug("DS: Registry: canceled lease: " + appName + " - "
-                             + id);
+                        + id);
                 return true;
             }
         } finally {
@@ -295,7 +295,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
         if (leaseToRenew == null) {
             RENEW_NOT_FOUND.increment(isReplication);
             logger.warn("DS: Registry: lease doesn't exist, registering resource: "
-                        + appName + " - " + id);
+                    + appName + " - " + id);
             return false;
         } else {
             InstanceInfo instanceInfo = leaseToRenew.getHolder();
@@ -308,8 +308,8 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
                 // instanceInfo.getStatus();
                 if (!instanceInfo.getStatus().equals(overriddenInstanceStatus)) {
                     Object[] args = { instanceInfo.getStatus().name(),
-                                      instanceInfo.getOverriddenStatus().name(),
-                                      instanceInfo.getId() };
+                            instanceInfo.getOverriddenStatus().name(),
+                            instanceInfo.getId() };
                     logger.info(
                             "The instance status {} is different from overridden instance status {} for instance {}. Hence setting the status to overridden status",
                             args);
@@ -332,10 +332,10 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
      *            Overridden status if any.
      */
     public void storeOverriddenStatusIfRequired(String id,
-                                                InstanceStatus overriddenStatus) {
+            InstanceStatus overriddenStatus) {
         InstanceStatus instanceStatus = overriddenInstanceStatusMap.get(id);
         if ((instanceStatus == null)
-            || (!overriddenStatus.equals(instanceStatus))) {
+                || (!overriddenStatus.equals(instanceStatus))) {
             // We might not have the overridden status if the server got
             // restarted -this will help us maintain the overridden state
             // from the replica
@@ -349,7 +349,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
                 logger.info(
                         "Setting the overridden status for instance id {} and the value is {} ",
                         id, overriddenStatus.name());
-
+              
             }
         }
     }
@@ -373,8 +373,8 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
      * @return true if the status was successfully updated, false otherwise.
      */
     public boolean statusUpdate(String appName, String id,
-                                InstanceStatus newStatus, String lastDirtyTimestamp,
-                                boolean isReplication) {
+            InstanceStatus newStatus, String lastDirtyTimestamp,
+            boolean isReplication) {
         try {
             read.lock();
             STATUS_UPDATE.increment(isReplication);
@@ -452,7 +452,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
                         String id = lease.getHolder().getId();
                         EXPIRED.increment();
                         logger.warn("DS: Registry: expired lease for "
-                                    + appName + " - " + id);
+                                + appName + " - " + id);
                         cancel(appName, id, false);
                     }
                 }
@@ -483,7 +483,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
      * @return
      */
     public Application getApplication(String appName,
-                                      boolean includeRemoteRegion) {
+            boolean includeRemoteRegion) {
         Application app = null;
 
         Map<String, Lease<InstanceInfo>> leaseMap = _registry.get(appName);
@@ -593,13 +593,13 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
             Iterator<RecentlyChangedItem> iter = this.recentlyChangedQueue
                     .iterator();
             logger.debug("The number of elements in the delta queue is :"
-                         + this.recentlyChangedQueue.size());
+                    + this.recentlyChangedQueue.size());
             while (iter.hasNext()) {
                 Lease<InstanceInfo> lease = iter.next().getLeaseInfo();
                 InstanceInfo instanceInfo = lease.getHolder();
                 Object[] args = { instanceInfo.getId(),
-                                  instanceInfo.getStatus().name(),
-                                  instanceInfo.getActionType().name() };
+                        instanceInfo.getStatus().name(),
+                        instanceInfo.getActionType().name() };
                 logger.debug(
                         "The instance id %s is found with status %s and actiontype %s",
                         args);
@@ -613,7 +613,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
                 app.addInstance(decorateInstanceInfo(lease));
             }
             Applications allAppsInLocalRegion = getApplications(false);
-
+            
             for (RemoteRegionRegistry remoteRegistry : this.remoteRegionRegistryList) {
                 Applications applications = remoteRegistry
                         .getApplicationDeltas();
@@ -662,14 +662,14 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
      * @return the information about the instance.
      */
     public InstanceInfo getInstanceByAppAndId(String appName, String id,
-                                              boolean includeRemoteRegions) {
+            boolean includeRemoteRegions) {
         Map<String, Lease<InstanceInfo>> leaseMap = _registry.get(appName);
         Lease<InstanceInfo> lease = null;
         if (leaseMap != null) {
             lease = leaseMap.get(id);
         }
         if (lease != null
-            && (!isLeaseExpirationEnabled() || !lease.isExpired())) {
+                && (!isLeaseExpirationEnabled() || !lease.isExpired())) {
             return decorateInstanceInfo(lease);
         } else if (includeRemoteRegions) {
             for (RemoteRegionRegistry remoteRegistry : this.remoteRegionRegistryList) {
@@ -705,7 +705,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
      * @return list of InstanceInfo objects.
      */
     public List<InstanceInfo> getInstancesById(String id,
-                                               boolean includeRemoteRegions) {
+            boolean includeRemoteRegions) {
         List<InstanceInfo> list = new ArrayList<InstanceInfo>();
 
         for (Iterator<Entry<String, Map<String, Lease<InstanceInfo>>>> iter = _registry
@@ -716,7 +716,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
                 Lease<InstanceInfo> lease = leaseMap.get(id);
 
                 if (lease == null
-                    || (isLeaseExpirationEnabled() && lease.isExpired())) {
+                        || (isLeaseExpirationEnabled() && lease.isExpired())) {
                     continue;
                 }
 
@@ -732,7 +732,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
         if (list.isEmpty() && includeRemoteRegions) {
             for (RemoteRegionRegistry remoteRegistry : this.remoteRegionRegistryList) {
                 for (Application application : remoteRegistry.getApplications()
-                                                             .getRegisteredApplications()) {
+                        .getRegisteredApplications()) {
                     InstanceInfo instanceInfo = application.getByInstanceId(id);
                     if (instanceInfo != null) {
                         list.add(instanceInfo);
@@ -760,11 +760,11 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
         }
 
         info.setLeaseInfo(LeaseInfo.Builder.newBuilder()
-                                   .setRegistrationTimestamp(lease.getRegistrationTimestamp())
-                                   .setRenewalTimestamp(lease.getLastRenewalTimestamp())
-                                   .setRenewalIntervalInSecs(renewalInterval)
-                                   .setDurationInSecs(leaseDuration)
-                                   .setEvictionTimestamp(lease.getEvictionTimestamp()).build());
+                .setRegistrationTimestamp(lease.getRegistrationTimestamp())
+                .setRenewalTimestamp(lease.getLastRenewalTimestamp())
+                .setRenewalIntervalInSecs(renewalInterval)
+                .setDurationInSecs(leaseDuration)
+                .setEvictionTimestamp(lease.getEvictionTimestamp()).build());
 
         info.setIsCoordinatingDiscoveryServer();
         return info;
@@ -876,7 +876,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
     }
 
     private InstanceStatus getOverriddenInstanceStatus(InstanceInfo r,
-                                                       Lease<InstanceInfo> existingLease, boolean isReplication) {
+            Lease<InstanceInfo> existingLease, boolean isReplication) {
         // Instance is DOWN or STARTING - believe that, but when the instance
         // says UP, question that
         // The client instance sends STARTING or DOWN (because of heartbeat
@@ -886,7 +886,7 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
         // as well since the service may be
         // currently in SERVICE
         if ((!InstanceStatus.UP.equals(r.getStatus()))
-            && (!InstanceStatus.OUT_OF_SERVICE.equals(r.getStatus()))) {
+                && (!InstanceStatus.OUT_OF_SERVICE.equals(r.getStatus()))) {
             logger.debug(
                     "Trusting the instance status {} from replica or instance for instance",
                     r.getStatus(), r.getId());
@@ -926,8 +926,8 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
             // Allow server to have its way when the status is UP or
             // OUT_OF_SERVICE
             if ((existingStatus != null)
-                && (InstanceStatus.OUT_OF_SERVICE.equals(existingStatus) || InstanceStatus.UP
-                                                                                          .equals(existingStatus))) {
+                    && (InstanceStatus.OUT_OF_SERVICE.equals(existingStatus) || InstanceStatus.UP
+                            .equals(existingStatus))) {
                 logger.debug(
                         "There is already an existing lease with status {}  for instance {}",
                         existingLease.getHolder().getStatus().name(),
@@ -950,8 +950,8 @@ public abstract class InstanceRegistry implements LeaseManager<InstanceInfo>,
                         .iterator();
                 while (it.hasNext()) {
                     if (it.next().getLastUpdateTime() < System
-                                                                .currentTimeMillis()
-                                                        - eurekaConfig.getRetentionTimeInMSInDeltaQueue()) {
+                            .currentTimeMillis()
+                            - eurekaConfig.getRetentionTimeInMSInDeltaQueue()) {
                         it.remove();
                     } else {
                         break;
