@@ -72,22 +72,22 @@ import javax.annotation.Nullable;
 public class ResponseCache {
 
     private static final Logger logger = LoggerFactory
-            .getLogger(ResponseCache.class);
+    .getLogger(ResponseCache.class);
     private static final EurekaServerConfig eurekaConfig = EurekaServerConfigurationManager
-            .getInstance().getConfiguration();
+    .getInstance().getConfiguration();
 
     public final static String ALL_APPS = "ALL_APPS";
     public final static String ALL_APPS_DELTA = "ALL_APPS_DELTA";
 
     private final com.netflix.servo.monitor.Timer serializeAllAppsTimer = Monitors
-            .newTimer("serialize-all");
+    .newTimer("serialize-all");
     private final com.netflix.servo.monitor.Timer serializeDeltaAppsTimer = Monitors
-            .newTimer("serialize-all-delta");
+    .newTimer("serialize-all-delta");
     private final com.netflix.servo.monitor.Timer serializeOneApptimer = Monitors
-            .newTimer("serialize-one");
+    .newTimer("serialize-one");
     private final com.netflix.servo.monitor.Timer serializeViptimer = Monitors.newTimer("serialize-one-vip");
     private final com.netflix.servo.monitor.Timer compressPayloadTimer = Monitors
-            .newTimer("compress-payload");
+    .newTimer("compress-payload");
 
     private static final Timer timer = new Timer("Eureka -CacheFillTimer", true);
     private static final AtomicLong versionDelta = new AtomicLong(0);
@@ -95,15 +95,15 @@ public class ResponseCache {
 
     public enum KeyType {
         JSON, XML
-    };
+    };;
 
     private final ConcurrentMap<Key, Value> readOnlyCacheMap = new ConcurrentHashMap<Key, Value>();
     private final LoadingCache<Key, Value> readWriteCacheMap = CacheBuilder
-            .newBuilder()
-            .initialCapacity(1000)
-            .expireAfterWrite(
-                    eurekaConfig.getResponseCacheAutoExpirationInSeconds(),
-                    TimeUnit.SECONDS).build(new CacheLoader<Key, Value>() {
+    .newBuilder()
+    .initialCapacity(1000)
+    .expireAfterWrite(
+            eurekaConfig.getResponseCacheAutoExpirationInSeconds(),
+            TimeUnit.SECONDS).build(new CacheLoader<Key, Value>() {
 
                 @Override
                 public Value load(Key key) throws Exception {
@@ -324,15 +324,15 @@ public class ResponseCache {
             String payload;
             switch (key.getEntityType()) {
                 case Application:
-                    if (ALL_APPS.equals(key.getName())) {
-                        tracer = this.serializeAllAppsTimer.start();
-                        payload = getPayLoad(key, registry.getApplications());
-                    } else if (ALL_APPS_DELTA.equals(key.getName())) {
-                        tracer = this.serializeDeltaAppsTimer.start();
-                        versionDelta.incrementAndGet();
-                        payload = getPayLoad(key, registry.getApplicationDeltas());
-                    } else {
-                        tracer = this.serializeOneApptimer.start();
+            if (ALL_APPS.equals(key.getName())) {
+                tracer = this.serializeAllAppsTimer.start();
+                payload = getPayLoad(key, registry.getApplications());
+            } else if (ALL_APPS_DELTA.equals(key.getName())) {
+                tracer = this.serializeDeltaAppsTimer.start();
+                versionDelta.incrementAndGet();
+                payload = getPayLoad(key, registry.getApplicationDeltas());
+            } else {
+                tracer = this.serializeOneApptimer.start();
                         payload = getPayLoad(key, registry.getApplication(key.getName()));
                     }
                     break;
