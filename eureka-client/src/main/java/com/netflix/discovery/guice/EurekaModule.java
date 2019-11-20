@@ -16,7 +16,6 @@ import com.netflix.discovery.providers.DefaultEurekaClientConfigProvider;
  * @author David Liu
  */
 public final class EurekaModule extends AbstractModule {
-
     @Override
     protected void configure() {
         // need to eagerly initialize
