@@ -55,7 +55,27 @@ public class StatusResource {
     @GET
     public StatusInfo getStatusInfo() {
         return statusUtil.getStatusInfo();
+    }private boolean isReplicaAvailable(String myAppName, String url) {
+
+        try {
+            String givenHostName = new URI(url).getHost();
+            Application app = PeerAwareInstanceRegistryImpl.getInstance()
+                    .getApplication(myAppName, false);
+            if (app == null) {
+                return false;
+            }
+            for (InstanceInfo info : app.getInstances()) {
+                if (info.getHostName().equals(givenHostName)) {
+                    return true;
+                }
+            }
+            givenHostName = new URI(url).getHost();
+        } catch (Throwable e) {
+            logger.error("Could not determine if the replica is available ", e);
+        }
+        return false;
     }
+
 
     public static String getCurrentTimeAsString() {
         SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);

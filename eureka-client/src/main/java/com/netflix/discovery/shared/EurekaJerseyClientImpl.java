@@ -237,6 +237,7 @@ public class EurekaJerseyClientImpl implements EurekaJerseyClient {
                 // (see DiscoveryClient.makeRemoteCall methods).
                 getProperties().put(PROPERTY_FOLLOW_REDIRECTS, Boolean.FALSE);
                 getProperties().put(ClientPNames.HANDLE_REDIRECTS, Boolean.FALSE);
+
             }
 
             private void addProxyConfiguration(MonitoredConnectionManager cm) {
